@@ -83,3 +83,20 @@ INSERT INTO equipements (name, reservation_id) VALUES
   ('Printer', 4),
   ('Conference Phone', 5),
   ('Camera', 6);
+
+-- Lister les elements de table Employees :
+SELECT * FROM `employees` WHERE 1;
+
+-- Lister la colonne id dans la table Employee :
+SELECT id FROM `employees`;
+
+-- Lister le tuple de la table Employee ou id = 1 :
+SELECT * FROM `employees` WHERE id = 1;
+
+-- Update le nom et l'email dans la table Employee :
+UPDATE `employees` SET name = 'Rachid Echafai', email = 'rachid.echaf@gmail.com'  WHERE name = 'Jane Smith' AND email = 'jane.smith@example.com';
+
+-- Join les elements de la table Employees avec les elements de la table reservations:
+SELECT employees.id, name, poste, date_debut, date_fin
+FROM employees
+INNER JOIN reservations ON employees.id = reservations.id;
