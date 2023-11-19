@@ -69,11 +69,16 @@ INSERT INTO salles (name, capacite) VALUES
 -- remplissages de table reservation :
 INSERT INTO reservations (date_debut, date_fin, employe_id, salle_id) VALUES 
     ('2023-01-15', '2023-01-15', 1, 1),
-    ('2023-02-01', '2023-02-03', 2, 2),
-    ('2023-03-10', '2023-03-10', 3, 3),
-    ('2023-01-15', '2023-01-15', 1, 4),
-    ('2023-02-01', '2023-02-03', 2, 5),
-    ('2023-03-10', '2023-03-10', 3, 6);
+    ('2023-02-01', '2023-02-03', 4, 2),
+    ('2023-03-10', '2023-03-10', 4, 2),
+    ('2023-01-15', '2023-01-15', 1, 1),
+    ('2023-02-01', '2023-02-03', 6, 3),
+    ('2023-03-10', '2023-03-12', 5, 4);
+    ('2023-03-12', '2023-03-14', 2, 5);
+    ('2023-03-14', '2023-03-15', 2, 5);
+    ('2023-03-15', '2023-03-17', 1, 4);
+    ('2023-03-17', '2023-03-20', 3, 1);
+    ('2023-03-12', '2023-03-21', 2, 3);
 
 -- remplissages de table equipement :
 INSERT INTO equipements (name, reservation_id) VALUES 
@@ -93,6 +98,33 @@ SELECT id FROM `employees`;
 -- Lister le tuple de la table Employee ou id = 1 :
 SELECT * FROM `employees` WHERE id = 1;
 
+-- liste des employees par leur nom
+SELECT *
+from employees
+ORDER BY name; 
+
+-- liste des 3 premier employes 
+SELECT *
+from employees
+LIMIT 3;
+
+-- liste des employees par leur profile 
+SELECT   
+concat (name,'  ', email) AS employe_profile
+FROM employees;
+
+-- liste des reservations des plus recentes
+SELECT *
+from reservations
+ORDER BY date_debut DESC; 
+
+-- liste des noms des employees avec le nom d'equipements
+SELECT name 
+FROM employees
+UNION
+SELECT name
+FROM equipements;
+
 -- Update le nom et l'email dans la table Employee :
 UPDATE `employees` SET name = 'Rachid Echafai', email = 'rachid.echaf@gmail.com'  WHERE name = 'Jane Smith' AND email = 'jane.smith@example.com';
 
@@ -100,3 +132,11 @@ UPDATE `employees` SET name = 'Rachid Echafai', email = 'rachid.echaf@gmail.com'
 SELECT employees.id, name, poste, date_debut, date_fin
 FROM employees
 INNER JOIN reservations ON employees.id = reservations.id;
+
+-- liste des employees et date reservations avec les equipements reserves
+SELECT employees.name, reservations.date_debut, reservations.date_fin, equipements.name
+FROM employees
+JOIN reservations
+ON employees.id = reservations.employe_id
+LEFT JOIN equipements
+ON reservations.id = equipements.reservation_id;
