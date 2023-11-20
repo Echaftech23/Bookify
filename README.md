@@ -14,6 +14,12 @@ The following UML diagrams describe the entities, relationships, and constraints
 
 - [https://bit.ly/UML_Diagram]
 
+### Jira Work Management
+
+For Bookify project management:
+
+- [https://sqluml.atlassian.net/jira/core/projects/FIRST/board]
+
 ## SQL Scripts
 
 To create the database structure defined by the schema, SQL scripts have been developed. These scripts are documented and organized to facilitate the setup process.
