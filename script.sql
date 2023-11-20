@@ -4,7 +4,8 @@ CREATE DATABASE bookify_DB;
 -- Creation de tables Employee:
 CREATE TABLE Employees (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
     departement VARCHAR(100),
     poste VARCHAR(100)
@@ -48,13 +49,13 @@ CREATE TABLE Equipements (
 CREATE INDEX idx_id ON equipements (id);
 
 -- remplissages de table Employee :
-INSERT INTO employees (name, email, departement, poste) VALUES
-('John Doe', 'john.doe@example.com', 'HR', 'HR Manager'),
-('Jane Smith', 'jane.smith@example.com', 'IT', 'Software Engineer'),
-('Bob Johnson', 'bob.johnson@example.com', 'Finance', 'Accountant'),
-('Alice Johnson', 'alice.johnson@example.com', 'Marketing', 'Marketing Specialist'),
-('Charlie Brown', 'charlie.brown@example.com', 'IT', 'System Administrator'),
-('Eva Rodriguez', 'eva.rodriguez@example.com', 'Finance', 'Financial Analyst');
+INSERT INTO employees (prenom, nom, email, departement, poste) VALUES
+('John', 'Doe', 'john.doe@example.com', 'HR', 'HR Manager'),
+('Jane', 'Smith', 'jane.smith@example.com', 'IT', 'Software Engineer'),
+('Nabil', 'chabab', 'bob.johnson@example.com', 'Finance', 'Accountant'),
+('Alice', 'Johnson', 'alice.johnson@example.com', 'Marketing', 'Marketing Specialist'),
+('Charlie', 'Brown', 'charlie.brown@example.com', 'IT', 'System Administrator'),
+('Eva', 'Rodriguez', 'eva.rodriguez@example.com', 'Finance', 'Financial Analyst');
 
 -- remplissages de table Salle :
 INSERT INTO salles (name, capacite) VALUES 
@@ -73,11 +74,11 @@ INSERT INTO reservations (date_debut, date_fin, employe_id, salle_id) VALUES
     ('2023-03-10', '2023-03-10', 4, 2),
     ('2023-01-15', '2023-01-15', 1, 1),
     ('2023-02-01', '2023-02-03', 6, 3),
-    ('2023-03-10', '2023-03-12', 5, 4);
-    ('2023-03-12', '2023-03-14', 2, 5);
-    ('2023-03-14', '2023-03-15', 2, 5);
-    ('2023-03-15', '2023-03-17', 1, 4);
-    ('2023-03-17', '2023-03-20', 3, 1);
+    ('2023-03-10', '2023-03-12', 5, 4),
+    ('2023-03-12', '2023-03-14', 2, 5),
+    ('2023-03-14', '2023-03-15', 2, 5),
+    ('2023-03-15', '2023-03-17', 1, 4),
+    ('2023-03-17', '2023-03-20', 3, 1),
     ('2023-03-12', '2023-03-21', 2, 3);
 
 -- remplissages de table equipement :
@@ -101,7 +102,7 @@ SELECT * FROM `employees` WHERE id = 1;
 -- liste des employees par leur nom
 SELECT *
 from employees
-ORDER BY name; 
+ORDER BY nom; 
 
 -- liste des 3 premier employes 
 SELECT *
@@ -110,7 +111,7 @@ LIMIT 3;
 
 -- liste des employees par leur profile 
 SELECT   
-concat (name,'  ', email) AS employe_profile
+concat (nom,' ', prenom,'  ', email) AS employe_profile
 FROM employees;
 
 -- liste des reservations des plus recentes
@@ -119,24 +120,33 @@ from reservations
 ORDER BY date_debut DESC; 
 
 -- liste des noms des employees avec le nom d'equipements
-SELECT name 
+SELECT nom 
 FROM employees
 UNION
 SELECT name
 FROM equipements;
 
 -- Update le nom et l'email dans la table Employee :
-UPDATE `employees` SET name = 'Rachid Echafai', email = 'rachid.echaf@gmail.com'  WHERE name = 'Jane Smith' AND email = 'jane.smith@example.com';
+UPDATE `employees` SET nom = 'Echafai', prenom = 'Rachid', email = 'rachid.echaf@gmail.com'  WHERE nom = 'Smith' AND prenom = 'Jane' AND email = 'jane.smith@example.com';
 
 -- Join les elements de la table Employees avec les elements de la table reservations:
-SELECT employees.id, name, poste, date_debut, date_fin
+SELECT employees.id, nom, prenom, poste, date_debut, date_fin
 FROM employees
 INNER JOIN reservations ON employees.id = reservations.id;
 
 -- liste des employees et date reservations avec les equipements reserves
-SELECT employees.name, reservations.date_debut, reservations.date_fin, equipements.name
+SELECT employees.nom, employees.prenom, reservations.date_debut, reservations.date_fin, equipements.name
 FROM employees
 JOIN reservations
 ON employees.id = reservations.employe_id
 LEFT JOIN equipements
 ON reservations.id = equipements.reservation_id;
+
+-- liste des reservations effectuer par l'employee Nabil avec salle :
+SELECT employees.nom, employees.prenom, salles.name, reservations.date_debut, reservations.date_fin 
+FROM employees
+JOIN Reservations
+ON employees.id = reservations.employe_id
+INNER JOIN salles
+ON  salles.id = reservations.salle_id
+WHERE employees.prenom = 'Nabil';
